@@ -1,7 +1,6 @@
-import fastify, { FastifyRequest, RequestGenericInterface, RequestQuerystringDefault } from 'fastify'
+import fastify from 'fastify'
 import axios from 'axios';
-import { BaseDogResponse, hasFailed } from './models/base-dog-response.model';
-import { DogFactResponse } from './models/fact-api/dog-fact-response.model';
+import { BaseDogResponse, BreedList, DogFactResponse, genericBreedRequest, hasFailed } from './src/models';
 
 const server = fastify()
 
@@ -14,12 +13,6 @@ server.get('/breed', async(request, reply) => {
 
     return reply.send(listResponse.data.message)
 })
-
-interface genericBreedRequest extends RequestGenericInterface {
-    Params: {
-        breed: string
-    }
-}
 
 server.get<genericBreedRequest>('/breed/:breed/image', async (request, reply) => {
     const breed = request.params.breed
@@ -41,8 +34,6 @@ server.get('/fact', async(request, reply) => {
 server.get('/ping', async (request, reply) => {
     return 'pong\n'
 })
-
-
 
 server.listen(8080, (err, address) => {
     if (err) {

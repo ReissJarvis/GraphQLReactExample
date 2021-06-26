@@ -1,3 +1,3 @@
-interface BreedList {
+export interface BreedList {
     [key: string]: string[]
 }
