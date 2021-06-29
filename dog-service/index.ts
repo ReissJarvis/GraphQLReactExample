@@ -1,8 +1,17 @@
 import fastify from 'fastify'
 import axios from 'axios';
 import { BaseDogResponse, BreedList, DogFactResponse, genericBreedRequest, hasFailed } from './src/models';
+import { FastifyCorsOptions } from 'fastify-cors';
 
-const server = fastify()
+const server = fastify(
+    {
+        logger: true
+    }
+)
+
+server.register(require('fastify-cors'), {
+    origin: "*"
+} as FastifyCorsOptions)
 
 server.get('/breed', async(request, reply) => {
     const listResponse = await axios.get<BaseDogResponse<BreedList>>('http://dog.ceo/api/breeds/list/all')
@@ -26,9 +35,17 @@ server.get<genericBreedRequest>('/breed/:breed/image', async (request, reply) =>
 })
 
 server.get('/fact', async(request, reply) => {
-    const factResponse  = await axios.get<DogFactResponse[]>("https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1")
+    try{
+        const factResponse  = await axios.get<DogFactResponse[]>("https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1")
+        return reply.send(factResponse.data[0].fact)
+    } catch (err) {
+        const errorMessage = err.message
 
-    return reply.send(factResponse.data[0].fact)
+        return reply.status(500).send(errorMessage)
+    }
+
+
+
 })
 
 server.listen(8080, (err, address) => {
