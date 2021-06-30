@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  dog:
+    build:
+      context: dog-service
+      dockerfile: ./debug/Dockerfile
+    image: reissjarvis/dog-service
+    restart: always
+    volumes:
+#      We add this volume for the file watcher to get updates inside the container
+      - ./dog-service:/usr/src/app
+    ports:
+      - '8080:8080'

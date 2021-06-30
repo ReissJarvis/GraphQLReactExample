@@ -13,6 +13,10 @@ server.register(require('fastify-cors'), {
     origin: "*"
 } as FastifyCorsOptions)
 
+server.get('/ok', async (request, reply) => {
+    return reply.send("All good!")
+})
+
 server.get('/breed', async(request, reply) => {
     const listResponse = await axios.get<BaseDogResponse<BreedList>>('http://dog.ceo/api/breeds/list/all')
 
@@ -43,15 +47,13 @@ server.get('/fact', async(request, reply) => {
 
         return reply.status(500).send(errorMessage)
     }
-
-
-
 })
 
-server.listen(8080, (err, address) => {
+server.listen(8080, '0.0.0.0', (err, address) => {
     if (err) {
         console.error(err)
         process.exit(1)
     }
+
     console.log(`Server listening at ${address}`)
 })
