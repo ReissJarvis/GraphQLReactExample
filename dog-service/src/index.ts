@@ -1,6 +1,6 @@
 import fastify from 'fastify'
 import axios from 'axios';
-import { BaseDogResponse, BreedList, DogFactResponse, genericBreedRequest, hasFailed } from './src/models';
+import { BaseDogResponse, BreedList, DogFactResponse, genericBreedRequest, hasFailed } from './models';
 import { FastifyCorsOptions } from 'fastify-cors';
 
 const server = fastify(
