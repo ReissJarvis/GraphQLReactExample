@@ -49,6 +49,7 @@ server.get('/fact', async(request, reply) => {
     }
 })
 
+// Need to specify 0.0.0.0 here for docker network
 server.listen(8080, '0.0.0.0', (err, address) => {
     if (err) {
         console.error(err)
