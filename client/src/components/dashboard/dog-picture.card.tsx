@@ -24,25 +24,35 @@ interface DogServiceBreedsResult {
 
 const DogPictureBreedSelection: FC<DogPictureSelectionProps> = ({breed, breeds, listLoading, onChange}) => {
 
+    useEffect(() => {
+        return () => {
+            console.log("Breeds Updated", breeds)
+        };
+    }, [breeds]);
+
+
     function handleChange(e: ChangeEvent<{ name?: string, value: unknown }>) {
         onChange(e.target.value as string)
     }
 
     return (
         <>
+
+            {breeds}
             {
                 listLoading
                     ? <CircularProgress size={20}/>
                     : <FormControl>
                         <InputLabel>Breed</InputLabel>
                         <Select
+
                             value={breed}
                             onChange={(e) => handleChange(e)}
                             autoWidth
                         >
                             {
                                 breeds.map(b =>
-                                    <MenuItem value={b}>{b}</MenuItem>
+                                    <MenuItem key={b} value={b}>{b}</MenuItem>
                                 )
                             }
 
@@ -73,16 +83,14 @@ export const DogPictureCard: FC = () => {
     }
 
     useEffect(() => {
-        return () => {
-            setListLoading(true)
+        setListLoading(true)
 
-            setTimeout(() => {
-                const mappedBreeds = getMappedBreeds(DOG_PICTURE_MOCK_DATA)
-                setBreeds(mappedBreeds)
+        setTimeout(() => {
+            const mappedBreeds = getMappedBreeds(DOG_PICTURE_MOCK_DATA)
+            setBreeds([...mappedBreeds])
 
-                setListLoading(false)
-            }, 2000)
-        };
+            setListLoading(false)
+        }, 2000)
     }, []);
 
     useEffect(() => {
