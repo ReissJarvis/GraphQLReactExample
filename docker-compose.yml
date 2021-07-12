@@ -1,6 +1,19 @@
 version: "3.9"
 
 services:
+
+  client:
+    build:
+      context: client
+      dockerfile: ./debug/Dockerfile
+    image: reissjarvis/client
+    restart: always
+    volumes:
+      - ./client:/usr/src/app
+      - client_modules:/usr/src/app/node_modules
+    ports:
+      - '3000:3000'
+
   dog:
     build:
       context: dog-service
@@ -12,3 +25,6 @@ services:
       - ./dog-service:/usr/src/app
     ports:
       - '8080:8080'
+
+volumes:
+  client_modules:
